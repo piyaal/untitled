@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Question Generator</title>
+  <style>
+    .container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.header-container { text-align: center; margin-bottom: 20px; } 
+.header { font-size: 32px; }
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.question-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.small-text-fields {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.small-field1 {
+  width: 60px;
+  margin-right: 5px;
+}
+.small-field{
+  width: 60px;
+  margin-right: 5px;
+}
+.small-field2 {
+  width: 60px;
+  margin-right: 5px;
+}
+
+.small-field3 {
+  width: 60px;
+  margin-right: 5px;
+}
+
+.small-field4 {
+  width: 60px;
+  margin-right: 5px;
+}
+
+.small-field5 {
+  width: 60px;
+  margin-right: 5px;
+}
+  </style>
+</head>
+<body>
+  <div class="header-container">
+    <h1 class="header">MCQ-Setter</h1>
+  </div>
+  <div id="questionContainer">
+    <!-- Questions and options will be displayed here -->
+  </div>
+  <button onclick="generateRandomSet()">Change Set</button>
+
+  <script>
+    const questions = [
+      {
+        question: "What is your name?",
+        options: ["a", "b", "x", "v", "n"]
+      },
+      {
+        question: "What is your passion?",
+        options: ["c", "d", "r", "z", "i"]
+      },
+      {
+        question: "Where are you come from?",
+        options: ["b", "l", "h", "q", "c"]
+      },
+      {
+        question: "How old are you?",
+        options: ["t", "j", "n", "b", "p"]
+      },
+      {
+        question: "What class do you read in?",
+        options: ["y", "j", "a", "s", "x"]
+      }
+      
+    ];
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function generateRandomSet() {
+      const questionContainer = document.getElementById("questionContainer");
+      questionContainer.innerHTML = "";
+
+      // Create a copy of the questions array to ensure no duplication
+      const availableQuestions = [...questions];
+      const selectedQuestions = [];
+
+      // Select five unique random questions
+      for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+        const selectedQuestion = availableQuestions.splice(randomIndex, 1)[0];
+        selectedQuestions.push(selectedQuestion);
+
+        // Shuffle the options for each selected question
+        shuffleArray(selectedQuestion.options);
+
+        // Create the HTML elements for the selected question
+        const questionDiv = document.createElement("div");
+        questionDiv.innerHTML = `
+          <label>${selectedQuestion.question}:</label>
+          <input type="text" class="question-input" value="${selectedQuestion.question}" readonly>
+          <div class="small-text-fields">
+            ${selectedQuestion.options.map(option => `<input type="text" class="small-field" value="${option}" readonly>`).join('')}
+          </div>
+        `;
+
+        questionContainer.appendChild(questionDiv);
+      }
+    }
+
+    // Generate the initial random set when the page loads
+    generateRandomSet();
+  </script>
+</body>
+</html>
